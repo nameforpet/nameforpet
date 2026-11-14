@@ -6,13 +6,26 @@ import Footer from '@/components/Footer';
 import PetPhotoUploader from '@/components/PetPhotoUploader';
 import AIScannerView from '@/components/AIScannerView';
 import ResultsDisplay from '@/components/ResultsDisplay';
-import ExploreModal from '@/components/ExploreModal';
+import PetNameDetailModal from '@/components/PetNameDetailModal';
+import AnimatedStats from '@/components/AnimatedStats';
 import SavedModal from '@/components/SavedModal';
-import SupabaseSetupBanner from '@/components/SupabaseSetupBanner';
-import { PetAnalysisResult, RecommendedName, UserPreferences, PetNameRecord } from '@/lib/types';
-import { analyzePetImage, matchPetNames } from '@/lib/petVisionAI';
-import { getPetNames, getLocalFavorites, toggleLocalFavorite, isSupabaseConfigured } from '@/lib/supabaseClient';
-import { Globe2, ShieldCheck, Zap } from 'lucide-react';
+import HomeSEOSection from '@/components/HomeSEOSection';
+import AuthModal from '@/components/AuthModal';
+import { getCurrentUser, setCurrentUser, saveUserLocally } from '@/lib/userStorage';
+import { PetAnalysisResult, RecommendedName, UserPreferences, PetNameRecord, PetSpecies, RegisteredUser } from '@/lib/types';
+import { analyzePetImage, matchPetNames, deriveSpeciesAdjustment } from '@/lib/petVisionAI';
+import { getPetNames, getLocalFavorites, toggleLocalFavorite, isSupabaseConfigured, supabase } from '@/lib/supabaseClient';
+import { Globe2, ShieldCheck, Zap, Camera, Sparkles } from 'lucide-react';
+
+// ── Floating language chips for the hero decoration ────────────────────────
+const LANG_CHIPS = [
+  { name: 'Mochi', lang: 'Japanese', emoji: '🇯🇵' },
+  { name: 'Luna', lang: 'Spanish', emoji: '🇪🇸' },
+  { name: 'Freya', lang: 'Norse', emoji: '🇳🇴' },
+  { name: 'Simba', lang: 'Swahili', emoji: '🌍' },
+  { name: 'Nabi', lang: 'Korean', emoji: '🇰🇷' },
+  { name: 'Bella', lang: 'Italian', emoji: '🇮🇹' },
+];
 
 export default function Home() {
   const [allNames, setAllNames] = useState<PetNameRecord[]>([]);
@@ -21,9 +34,11 @@ export default function Home() {
   const [analysisResult, setAnalysisResult] = useState<PetAnalysisResult | null>(null);
   const [recommendedNames, setRecommendedNames] = useState<RecommendedName[]>([]);
   const [savedIds, setSavedIds] = useState<string[]>([]);
-  
-  const [isExploreOpen, setIsExploreOpen] = useState(false);
+  const [selectedPetName, setSelectedPetName] = useState<RecommendedName | null>(null);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
+  const [activeChip, setActiveChip] = useState(0);
+  const [currentUser, setCurrentUserSession] = useState<RegisteredUser | null>(null);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const [preferences, setPreferences] = useState<UserPreferences>({
     targetLanguage: 'All Languages',
@@ -31,8 +46,34 @@ export default function Home() {
     vibe: 'all'
   });
 
-  // Load pet names from Supabase (or fallback) and local favorites on mount
   useEffect(() => {
+    setCurrentUserSession(getCurrentUser());
+
+    // Check for Supabase OAuth redirect session (e.g. Google Sign-In redirect)
+    if (isSupabaseConfigured && supabase) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          const email = session.user.email || 'user@gmail.com';
+          const name = session.user.user_metadata?.full_name || email.split('@')[0];
+          const oauthUser: RegisteredUser = {
+            id: `USR-G${session.user.id.slice(0, 6)}`,
+            name,
+            email,
+            createdAt: session.user.created_at || new Date().toISOString(),
+            lastLoginAt: new Date().toISOString(),
+            role: 'user',
+            savedNamesCount: 0,
+            ordersCount: 0,
+            provider: 'google',
+            avatarUrl: session.user.user_metadata?.avatar_url
+          };
+          saveUserLocally(oauthUser);
+          setCurrentUser(oauthUser);
+          setCurrentUserSession(oauthUser);
+        }
+      });
+    }
+
     async function loadData() {
       const res = await getPetNames();
       setAllNames(res.names);
@@ -41,132 +82,236 @@ export default function Home() {
     loadData();
   }, []);
 
-  // Handle image upload and trigger Built-in AI Vision analysis
+  // Rotate language chips
+  useEffect(() => {
+    const t = setInterval(() => setActiveChip(c => (c + 1) % LANG_CHIPS.length), 2200);
+    return () => clearInterval(t);
+  }, []);
+
   const handleImageSelected = async (dataUrl: string) => {
     setUploadedImageSrc(dataUrl);
+    try {
+      localStorage.setItem('nameforpet_last_uploaded_image', dataUrl);
+    } catch {}
     setIsAnalyzing(true);
     setAnalysisResult(null);
 
-    // Create a temporary image element for computer vision & canvas processing
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.src = dataUrl;
 
-    img.onload = async () => {
+    const triggerAnalysis = async () => {
       try {
-        // Run our built-in zero-external-API pet vision analyzer
-        const result = await analyzePetImage(img);
-        
-        // Allow user to experience the scan animation naturally
-        setTimeout(() => {
-          setAnalysisResult(result);
+        // Run AI analysis with a parallel minimum 1.5s scanner animation so the transition feels smooth
+        const [result] = await Promise.all([
+          analyzePetImage(img),
+          new Promise(r => setTimeout(r, 1400))
+        ]);
+
+        setAnalysisResult(result);
+        if (result && result.isAnimal) {
           const matched = matchPetNames(result, allNames, preferences);
           setRecommendedNames(matched);
-          setIsAnalyzing(false);
-        }, 1800);
+        } else {
+          setRecommendedNames([]);
+        }
       } catch (err) {
         console.error('Analysis error:', err);
+      } finally {
         setIsAnalyzing(false);
       }
     };
 
-    img.onerror = () => {
-      alert('Could not load the image for analysis. Please try another photo.');
-      setIsAnalyzing(false);
-    };
-  };
-
-  // Recalculate matches when user updates preferences (e.g. language or gender filter)
-  const handlePreferencesChange = (newPrefs: UserPreferences) => {
-    setPreferences(newPrefs);
-    if (analysisResult) {
-      const matched = matchPetNames(analysisResult, allNames, newPrefs);
-      setRecommendedNames(matched);
+    if (img.complete && img.naturalWidth !== 0) {
+      triggerAnalysis();
+    } else {
+      img.onload = () => triggerAnalysis();
+      img.onerror = () => {
+        alert('Could not load the image. Please try another photo.');
+        setIsAnalyzing(false);
+      };
     }
   };
 
-  const handleToggleSave = (id: string) => {
-    const next = toggleLocalFavorite(id);
-    setSavedIds(next);
+  const handleSampleSelect = async (url: string) => {
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleImageSelected(reader.result as string);
+      };
+      reader.readAsDataURL(blob);
+    } catch {
+      handleImageSelected(url);
+    }
   };
 
+  const handlePreferencesChange = (newPrefs: UserPreferences) => {
+    setPreferences(newPrefs);
+    if (analysisResult && analysisResult.isAnimal) {
+      setRecommendedNames(matchPetNames(analysisResult, allNames, newPrefs));
+    }
+  };
+
+  const handleToggleSave = (id: string) => setSavedIds(toggleLocalFavorite(id));
   const handleClearSaved = () => {
+    localStorage.removeItem('nameforpet_favorites');
     localStorage.removeItem('loveforpet_favorites');
     setSavedIds([]);
   };
-
   const handleReset = () => {
     setUploadedImageSrc(null);
     setAnalysisResult(null);
     setRecommendedNames([]);
+    setSelectedPetName(null);
     setIsAnalyzing(false);
   };
 
-  const savedNameRecords = allNames.filter((n) => savedIds.includes(n.id));
+  const handleOverrideAsPet = () => {
+    if (!analysisResult) return;
+    const forcedResult: PetAnalysisResult = {
+      ...analysisResult,
+      isAnimal: true,
+      detectedSpecies: 'dog',
+      detectedBreed: `${analysisResult.dominantColors[0]?.name ?? 'Warm Coat'} Companion`,
+      confidence: 88,
+      vibe: 'Warm, Loving & Playful',
+      subjectIsolated: true,
+      description: 'Confirmed pet companion with beautiful natural coat tones.'
+    };
+    setAnalysisResult(forcedResult);
+    setRecommendedNames(matchPetNames(forcedResult, allNames, preferences));
+  };
+
+  const handleSpeciesChange = (newSpecies: PetSpecies) => {
+    if (!analysisResult) return;
+    const updatedResult = deriveSpeciesAdjustment(analysisResult, newSpecies);
+    setAnalysisResult(updatedResult);
+    const matched = matchPetNames(updatedResult, allNames, preferences);
+    setRecommendedNames(matched);
+  };
+
+  const handleBreedChange = (newBreed: string) => {
+    if (!analysisResult) return;
+    const updatedResult: PetAnalysisResult = {
+      ...analysisResult,
+      detectedBreed: newBreed,
+      description: `Subject Pet Isolated: Verified your ${newBreed} with lovely coat tones.`
+    };
+    setAnalysisResult(updatedResult);
+    const matched = matchPetNames(updatedResult, allNames, preferences);
+    setRecommendedNames(matched);
+  };
+
+  const savedNameRecords = allNames.filter(n => savedIds.includes(n.id));
+  const isHome = !uploadedImageSrc;
 
   return (
     <div className="min-h-screen bg-pet-pattern flex flex-col selection:bg-brand-100 selection:text-brand-900">
-      
-      {/* Navigation */}
       <Navbar
         savedCount={savedIds.length}
         onOpenSaved={() => setIsSavedOpen(true)}
-        onOpenExplore={() => setIsExploreOpen(true)}
         onResetHome={handleReset}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsAuthOpen(true)}
+        onSignOut={() => {
+          setCurrentUser(null);
+          setCurrentUserSession(null);
+        }}
       />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 pt-6 sm:pt-10">
-        
-        {/* Main Hero Header */}
-        {!uploadedImageSrc && (
-          <div className="text-center max-w-3xl mx-auto mb-10 animate-fade-in">
-            
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-stone-200/80 shadow-xs mb-5 text-stone-700 text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Self-Hosted Vision AI • Zero Cloud API Costs</span>
-            </div>
+      <main id="main-content" className="flex-1 w-full">
 
-            <h1 className="text-4xl sm:text-6xl font-black text-stone-900 tracking-tight leading-[1.15]">
-              Give your pet a name as special as their{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 via-amber-500 to-rose-400">
-                true spirit
-              </span>
-            </h1>
+        {/* ═══════════════════════════════════════════════════
+            HERO — only shown when no photo uploaded
+        ═══════════════════════════════════════════════════ */}
+        {isHome && (
+          <section className="max-w-6xl mx-auto px-3 sm:px-6 pt-6 sm:pt-16 pb-6 sm:pb-8">
 
-            <p className="mt-4 text-base sm:text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto">
-              Upload a picture of your pet. Our built-in vision AI identifies their coat colors, features, and personality to recommend meaningful names across 14+ world languages.
-            </p>
-
-            {/* Quick feature pill highlights */}
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-stone-500 font-medium">
-              <span className="flex items-center gap-1.5">
-                <Globe2 className="w-4 h-4 text-brand-500" />
-                14+ World Languages
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Zap className="w-4 h-4 text-amber-500" />
-                Instant On-Device AI
-              </span>
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                100% Free & Private
+            {/* ── Badge ── */}
+            <div className="flex justify-center mb-3 sm:mb-5">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-white border border-stone-200 shadow-2xs text-[11px] sm:text-xs font-semibold text-stone-700">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Vision AI · Zero API Costs
               </span>
             </div>
 
-          </div>
+            {/* ── Headline ── */}
+            <div className="text-center max-w-3xl mx-auto">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-stone-900 tracking-tight leading-[1.15] break-words">
+                Find your pet&apos;s perfect name{' '}
+                <span className="relative inline-block">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 via-amber-500 to-rose-400">
+                    with AI
+                  </span>
+                  {/* underline squiggle */}
+                  <svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 140 8" fill="none">
+                    <path d="M2 5 Q35 1 70 5 Q105 9 138 5" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.6" />
+                  </svg>
+                </span>
+              </h1>
+
+              <p className="mt-3 sm:mt-5 text-sm sm:text-lg text-stone-600 leading-relaxed max-w-xl mx-auto px-1">
+                Upload your pet&apos;s photo on <strong>nameforpet.com</strong>. Our Vision AI scans their coat and features and suggests meaningful names across <strong>22+ languages</strong>!
+              </p>
+            </div>
+
+            {/* ── Animated Stats: Languages, Names & Happy Users ── */}
+            <AnimatedStats />
+
+            {/* ── Rotating Language Chip ── */}
+            <div className="mt-4 sm:mt-6 flex justify-center">
+              <div className="flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 bg-white rounded-full border border-stone-200 shadow-2xs text-xs sm:text-sm">
+                <span className="text-stone-500 text-[11px] sm:text-xs font-medium">Now showing:</span>
+                <span
+                  key={activeChip}
+                  className="font-bold text-stone-800 animate-fade-in"
+                >
+                  {LANG_CHIPS[activeChip].emoji} &ldquo;{LANG_CHIPS[activeChip].name}&rdquo;
+                </span>
+                <span className="text-[11px] sm:text-xs text-stone-400">{LANG_CHIPS[activeChip].lang}</span>
+              </div>
+            </div>
+
+            {/* ── Feature Pills ── */}
+            <div className="mt-4 sm:mt-5 flex items-center justify-start sm:justify-center gap-1.5 sm:gap-2.5 text-[11px] sm:text-xs text-stone-500 font-medium overflow-x-auto pb-1 sm:flex-wrap no-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0">
+              <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white rounded-full border border-stone-200 shadow-2xs">
+                <Globe2 className="w-3.5 h-3.5 text-brand-500" /> 22+ Languages
+              </span>
+              <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white rounded-full border border-stone-200 shadow-2xs">
+                <Zap className="w-3.5 h-3.5 text-amber-500" /> Instant On-Device
+              </span>
+              <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white rounded-full border border-stone-200 shadow-2xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> 100% Private
+              </span>
+              <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white rounded-full border border-stone-200 shadow-2xs">
+                <Camera className="w-3.5 h-3.5 text-sky-500" /> Dogs · Cats · Birds · Rabbits
+              </span>
+              <span className="shrink-0 flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white rounded-full border border-stone-200 shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-rose-500" /> 100% Free AI Generator
+              </span>
+            </div>
+          </section>
         )}
 
-        {/* Dynamic Interactive Stage */}
-        <div className="transition-all duration-300">
-          {!uploadedImageSrc && (
-            <PetPhotoUploader
-              onImageSelected={handleImageSelected}
-              isLoading={isAnalyzing}
-            />
+        {/* ═══════════════════════════════════════════════════
+            DYNAMIC STAGE
+        ═══════════════════════════════════════════════════ */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-6">
+          {isHome && (
+            <>
+              <div className="mt-4">
+                <PetPhotoUploader onImageSelected={handleImageSelected} isLoading={isAnalyzing} />
+              </div>
+              <HomeSEOSection />
+            </>
           )}
 
           {uploadedImageSrc && isAnalyzing && (
-            <AIScannerView imageSrc={uploadedImageSrc} />
+            <div className="py-10">
+              <AIScannerView imageSrc={uploadedImageSrc} />
+            </div>
           )}
 
           {uploadedImageSrc && !isAnalyzing && analysisResult && (
@@ -179,26 +324,26 @@ export default function Home() {
               onReset={handleReset}
               savedIds={savedIds}
               onToggleSave={handleToggleSave}
+              onSelectSample={handleSampleSelect}
+              onSelectName={(nameItem) => setSelectedPetName(nameItem)}
+              onOverrideAsPet={handleOverrideAsPet}
+              onSpeciesChange={handleSpeciesChange}
+              onBreedChange={handleBreedChange}
             />
           )}
+
+          {/* Modal when user clicks any pet name */}
+          <PetNameDetailModal
+            isOpen={!!selectedPetName}
+            onClose={() => setSelectedPetName(null)}
+            nameItem={selectedPetName}
+            petImageSrc={uploadedImageSrc}
+            analysis={analysisResult}
+            isSaved={selectedPetName ? savedIds.includes(selectedPetName.id) : false}
+            onToggleSave={handleToggleSave}
+          />
         </div>
-
-        {/* Supabase Status & Setup Guide Banner */}
-        <SupabaseSetupBanner
-          isConfigured={isSupabaseConfigured}
-          totalNamesCount={allNames.length}
-        />
-
       </main>
-
-      {/* Modals */}
-      <ExploreModal
-        isOpen={isExploreOpen}
-        onClose={() => setIsExploreOpen(false)}
-        allNames={allNames}
-        savedIds={savedIds}
-        onToggleSave={handleToggleSave}
-      />
 
       <SavedModal
         isOpen={isSavedOpen}
@@ -208,9 +353,13 @@ export default function Home() {
         onClearAll={handleClearSaved}
       />
 
-      {/* Footer */}
-      <Footer />
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        onAuthSuccess={(user) => setCurrentUserSession(user)}
+      />
 
+      <Footer />
     </div>
   );
 }

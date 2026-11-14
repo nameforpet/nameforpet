@@ -10,8 +10,9 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  min-height: 100vh;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Subtle paw print / dot pattern background */
@@ -19,6 +20,15 @@ body {
   background-color: #FAF6F0;
   background-image: radial-gradient(#E8DFD4 1.2px, transparent 1.2px);
   background-size: 24px 24px;
+}
+
+/* Hide scrollbar for clean horizontal carousels on mobile */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Custom subtle scrollbar */
@@ -34,4 +44,110 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #bfaea0;
+}
+
+/* Shimmer Skeleton Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f3f0ea 0%,
+    #faf7f2 50%,
+    #f3f0ea 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite ease-in-out;
+}
+
+/* ── Running Image Rows (Marquee) ── */
+@keyframes marquee-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-right 38s linear infinite;
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-left 38s linear infinite;
+}
+
+.animate-marquee-right:hover,
+.animate-marquee-left:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-right,
+  .animate-marquee-left {
+    animation: none;
+    overflow-x: auto;
+  }
+}
+
+/* ── Bounded Vision AI Laser Scanning Animation (smooth up & down sweep) ── */
+@keyframes laser-scan {
+  0% {
+    top: 8%;
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 82%;
+    opacity: 0.85;
+  }
+}
+
+@keyframes laser-veil {
+  0% {
+    top: 6%;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    top: 68%;
+    opacity: 0.2;
+  }
+}
+
+.animate-laser-scan {
+  animation: laser-scan 2.2s ease-in-out infinite alternate;
+  will-change: top, opacity;
+}
+
+.animate-laser-veil {
+  animation: laser-veil 2.2s ease-in-out infinite alternate;
+  will-change: top, opacity;
 }

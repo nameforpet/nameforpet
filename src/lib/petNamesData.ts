@@ -995,23 +995,286 @@ export const INITIAL_PET_NAMES: PetNameRecord[] = [
     color_tags: ['grey', 'silver', 'black'],
     vibe_tags: ['calm', 'sleek', 'gentle'],
     popularity: 93
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // INNER AI CLASSIFICATION SYSTEM: LUXURY (💎)
+  // ═══════════════════════════════════════════════════════════════════════
+  {
+    id: 'lux-1',
+    name: 'Maximilian',
+    meaning: 'The greatest, supreme imperial prestige and high majesty',
+    origin_language: 'Latin',
+    pronunciation: 'maks-ih-MIL-yun',
+    gender: 'male',
+    species: ['dog', 'cat'],
+    color_tags: ['golden', 'black', 'brown'],
+    vibe_tags: ['luxury', 'noble', 'regal', 'royal'],
+    popularity: 97,
+    fun_fact: 'Historic Roman emperor name traditionally given to dignified large hounds and majestic cats.'
+  },
+  {
+    id: 'lux-2',
+    name: 'Duchess',
+    meaning: 'Aristocratic noblewoman of royal rank, poise, and crystal elegance',
+    origin_language: 'French',
+    pronunciation: 'DUCH-is',
+    gender: 'female',
+    species: ['cat', 'dog', 'rabbit'],
+    color_tags: ['white', 'cream', 'silver'],
+    vibe_tags: ['luxury', 'noble', 'regal', 'royal'],
+    popularity: 96,
+    fun_fact: 'Inspired by haute-couture Parisian grace, perfect for pure white or silky coated pets.'
+  },
+  {
+    id: 'lux-3',
+    name: 'Sterling',
+    meaning: 'Genuine high-value silver, brilliant excellence and refined pedigree',
+    origin_language: 'English',
+    pronunciation: 'STUR-ling',
+    gender: 'male',
+    species: ['dog', 'cat'],
+    color_tags: ['grey', 'silver', 'white'],
+    vibe_tags: ['luxury', 'noble', 'sleek'],
+    popularity: 95
+  },
+  {
+    id: 'lux-4',
+    name: 'Aurelius',
+    meaning: 'The golden emperor, radiant splendor and timeless wisdom',
+    origin_language: 'Latin',
+    pronunciation: 'aw-REE-lee-us',
+    gender: 'male',
+    species: ['dog', 'cat', 'bird'],
+    color_tags: ['golden', 'yellow', 'orange'],
+    vibe_tags: ['luxury', 'noble', 'regal'],
+    popularity: 94
+  },
+  {
+    id: 'lux-5',
+    name: 'Bentley',
+    meaning: 'High-class luxury, opulent poise and handcrafted perfection',
+    origin_language: 'English',
+    pronunciation: 'BENT-lee',
+    gender: 'unisex',
+    species: ['dog', 'cat'],
+    color_tags: ['black', 'brown', 'cream'],
+    vibe_tags: ['luxury', 'noble', 'regal'],
+    popularity: 95
+  },
+  {
+    id: 'lux-6',
+    name: 'Versace',
+    meaning: 'Italian haute couture, glamorous golden design and bold elegance',
+    origin_language: 'Italian',
+    pronunciation: 'vur-SAH-chee',
+    gender: 'unisex',
+    species: ['dog', 'cat'],
+    color_tags: ['golden', 'black', 'spotted'],
+    vibe_tags: ['luxury', 'noble'],
+    popularity: 93
+  },
+  {
+    id: 'lux-7',
+    name: 'Tiffany',
+    meaning: 'Divine luxury jewel, pristine turquoise charm and brilliance',
+    origin_language: 'Greek',
+    pronunciation: 'TIF-uh-nee',
+    gender: 'female',
+    species: ['cat', 'dog', 'bird'],
+    color_tags: ['white', 'silver', 'cream'],
+    vibe_tags: ['luxury', 'cute', 'noble'],
+    popularity: 94
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // INNER AI CLASSIFICATION SYSTEM: FUNNY (😂)
+  // ═══════════════════════════════════════════════════════════════════════
+  {
+    id: 'fun-1',
+    name: 'Sir Paws-a-Lot',
+    meaning: 'Hilariously self-important noble knight of excessive zoomies and lap claims',
+    origin_language: 'English',
+    pronunciation: 'sur PAWZ-uh-lot',
+    gender: 'male',
+    species: ['dog', 'cat'],
+    color_tags: ['golden', 'brown', 'black', 'spotted'],
+    vibe_tags: ['funny', 'playful', 'quirky'],
+    popularity: 96,
+    fun_fact: 'Voted one of the funniest pet names by modern pet parents for goofy companion animals.'
+  },
+  {
+    id: 'fun-2',
+    name: 'Bark Twain',
+    meaning: 'Witty literary comedian with a booming bark and storytelling eyes',
+    origin_language: 'English',
+    pronunciation: 'bark TWAYN',
+    gender: 'male',
+    species: ['dog'],
+    color_tags: ['brown', 'golden', 'white'],
+    vibe_tags: ['funny', 'playful'],
+    popularity: 95
+  },
+  {
+    id: 'fun-3',
+    name: 'Nugget',
+    meaning: 'Bite-sized comedic treasure with endless spunky energy',
+    origin_language: 'English',
+    pronunciation: 'NUG-it',
+    gender: 'unisex',
+    species: ['dog', 'cat', 'bird', 'rabbit'],
+    color_tags: ['golden', 'orange', 'yellow', 'brown'],
+    vibe_tags: ['funny', 'cute', 'food'],
+    popularity: 98
+  },
+  {
+    id: 'fun-4',
+    name: 'Pickles',
+    meaning: 'Zesty, sour-sweet troublemaker who always gets into funny pickles',
+    origin_language: 'English',
+    pronunciation: 'PIK-ulz',
+    gender: 'unisex',
+    species: ['dog', 'cat', 'rabbit'],
+    color_tags: ['green', 'grey', 'spotted', 'black'],
+    vibe_tags: ['funny', 'playful', 'food'],
+    popularity: 97
+  },
+  {
+    id: 'fun-5',
+    name: 'Meatball',
+    meaning: 'Plump, roll-around bundle of pure joy and hearty appetites',
+    origin_language: 'Italian',
+    pronunciation: 'MEET-bawl',
+    gender: 'male',
+    species: ['dog', 'cat'],
+    color_tags: ['brown', 'orange', 'golden'],
+    vibe_tags: ['funny', 'playful', 'food'],
+    popularity: 94
+  },
+  {
+    id: 'fun-6',
+    name: 'Wasabi',
+    meaning: 'Tiny kick of fiery comedy that surprises everyone',
+    origin_language: 'Japanese',
+    pronunciation: 'wah-SAH-bee',
+    gender: 'unisex',
+    species: ['cat', 'dog', 'bird'],
+    color_tags: ['green', 'yellow', 'spotted'],
+    vibe_tags: ['funny', 'playful', 'food'],
+    popularity: 93
+  },
+  {
+    id: 'fun-7',
+    name: 'Chewbacca',
+    meaning: 'Legendary fuzzy vocal warrior known for comical whines and hugs',
+    origin_language: 'English',
+    pronunciation: 'choo-BAH-kuh',
+    gender: 'unisex',
+    species: ['dog', 'cat'],
+    color_tags: ['brown', 'golden', 'black'],
+    vibe_tags: ['funny', 'brave', 'playful'],
+    popularity: 96
+  },
+  {
+    id: 'fun-8',
+    name: 'Professor Paws',
+    meaning: 'Earnest scholar of squeaky toys and serious nap theory',
+    origin_language: 'English',
+    pronunciation: 'pruh-FES-ur PAWZ',
+    gender: 'male',
+    species: ['cat', 'dog'],
+    color_tags: ['grey', 'black', 'white'],
+    vibe_tags: ['funny', 'noble', 'quirky'],
+    popularity: 92
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // INNER AI CLASSIFICATION SYSTEM: CUTE (🌸)
+  // ═══════════════════════════════════════════════════════════════════════
+  {
+    id: 'cute-1',
+    name: 'Marshmallow',
+    meaning: 'Ultra soft, puffy sweet treat that melts your heart instantly',
+    origin_language: 'English',
+    pronunciation: 'MAHRSH-mal-oh',
+    gender: 'unisex',
+    species: ['dog', 'cat', 'rabbit'],
+    color_tags: ['white', 'cream'],
+    vibe_tags: ['cute', 'sweet', 'food'],
+    popularity: 99
+  },
+  {
+    id: 'cute-2',
+    name: 'Peanut',
+    meaning: 'Teeny-tiny adorable darling packed with boundless sweetness',
+    origin_language: 'English',
+    pronunciation: 'PEE-nut',
+    gender: 'unisex',
+    species: ['dog', 'cat', 'rabbit', 'bird'],
+    color_tags: ['brown', 'golden', 'cream'],
+    vibe_tags: ['cute', 'sweet', 'food'],
+    popularity: 98
+  },
+  {
+    id: 'cute-3',
+    name: 'Boba',
+    meaning: 'Chewy sweet tapioca pearl of endless cuddles and fun',
+    origin_language: 'Chinese',
+    pronunciation: 'BOH-buh',
+    gender: 'unisex',
+    species: ['dog', 'cat', 'rabbit'],
+    color_tags: ['black', 'brown', 'cream'],
+    vibe_tags: ['cute', 'food', 'sweet'],
+    popularity: 97
+  },
+  {
+    id: 'cute-4',
+    name: 'Honey',
+    meaning: 'Golden amber nectar of warmth, tenderness and affection',
+    origin_language: 'English',
+    pronunciation: 'HUN-ee',
+    gender: 'female',
+    species: ['dog', 'cat', 'bird', 'rabbit'],
+    color_tags: ['golden', 'orange', 'yellow'],
+    vibe_tags: ['cute', 'sweet', 'gentle'],
+    popularity: 98
+  },
+  {
+    id: 'cute-5',
+    name: 'Pippin',
+    meaning: 'Small sweet apple seed, cheerful loyal companion',
+    origin_language: 'English',
+    pronunciation: 'PIP-in',
+    gender: 'unisex',
+    species: ['dog', 'cat', 'rabbit', 'bird'],
+    color_tags: ['golden', 'spotted', 'cream'],
+    vibe_tags: ['cute', 'playful', 'sweet'],
+    popularity: 94
   }
 ];
 
 export const AVAILABLE_LANGUAGES = [
   'All Languages',
-  'Japanese',
+  'English',
   'French',
+  'German',
   'Spanish',
   'Italian',
-  'German',
-  'Celtic / Irish',
-  'Norse',
-  'Latin',
+  'Portuguese',
+  'Dutch',
+  'Swedish',
+  'Norwegian',
+  'Danish',
+  'Finnish',
+  'Icelandic',
+  'Scottish',
+  'Irish',
+  'Welsh',
+  'Polish',
+  'Czech',
+  'Hungarian',
+  'Romanian',
+  'Russian',
   'Greek',
-  'Hindi',
-  'Arabic',
-  'Swahili',
-  'Korean',
-  'English'
+  'Japanese'
 ];

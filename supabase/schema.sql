@@ -40,11 +40,18 @@ create policy "Allow public read access to pet names"
   for select
   using (true);
 
--- 5. (Optional) Allow authenticated admins or service role to insert/update names
+-- 5. Allow inserts & updates (for seeding and catalog additions)
 drop policy if exists "Allow insert with service key" on public.pet_names;
 create policy "Allow insert with service key"
   on public.pet_names
   for insert
+  with check (true);
+
+drop policy if exists "Allow update with service key" on public.pet_names;
+create policy "Allow update with service key"
+  on public.pet_names
+  for update
+  using (true)
   with check (true);
 
 -- 6. Table for user-saved favorite pet names
@@ -63,4 +70,82 @@ create policy "Allow public access to user_favorites"
   on public.user_favorites
   for all
   using (true)
+  with check (true);
+
+-- ========================================================
+-- 7. Orders Table (Pet Collar Bands)
+-- ========================================================
+create table if not exists public.orders (
+  id text primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  customer_name text not null,
+  customer_phone text not null,
+  customer_email text,
+  shipping_address text not null,
+  city text not null,
+  postal_code text,
+  pet_name text not null,
+  pet_species text default 'other',
+  pet_image text,
+  band_color text not null,
+  band_material text,
+  collar_size text not null,
+  custom_engraving_text text,
+  payment_method text default 'Cash on Delivery',
+  order_total_lkr numeric default 2850,
+  status text default 'pending',
+  notes text
+);
+
+alter table public.orders enable row level security;
+
+drop policy if exists "Allow public access to orders" on public.orders;
+create policy "Allow public access to orders"
+  on public.orders
+  for all
+  using (true)
+  with check (true);
+
+-- ========================================================
+-- 8. Registered Users Table (For Sign In / Sign Up)
+-- ========================================================
+create table if not exists public.registered_users (
+  id text primary key,
+  name text not null,
+  email text unique not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  last_login_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  role text default 'user',
+  saved_names_count integer default 0,
+  orders_count integer default 0,
+  provider text default 'email'
+);
+
+alter table public.registered_users enable row level security;
+
+drop policy if exists "Allow public access to registered_users" on public.registered_users;
+create policy "Allow public access to registered_users"
+  on public.registered_users
+  for all
+  using (true)
+  with check (true);
+
+-- ========================================================
+-- 9. Contact Messages Table
+-- ========================================================
+create table if not exists public.contact_messages (
+  id uuid default uuid_generate_v4() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  name text not null,
+  email text not null,
+  subject text,
+  message text not null
+);
+
+alter table public.contact_messages enable row level security;
+
+drop policy if exists "Allow public insert on contact_messages" on public.contact_messages;
+create policy "Allow public insert on contact_messages"
+  on public.contact_messages
+  for insert
   with check (true);

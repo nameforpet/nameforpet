@@ -35,7 +35,17 @@ export async function getPetNames(): Promise<{ names: PetNameRecord[]; source: '
     }
   }
 
-  // Graceful fallback to our rich built-in dataset
+  // Gracefully load unified dataset with 17,900+ pet names across 22 languages and cute/luxury/funny types
+  try {
+    const unifiedData = (await import('@/data/unifiedPetNames.json')).default as PetNameRecord[];
+    if (unifiedData && unifiedData.length > 0) {
+      return { names: unifiedData, source: 'built-in' };
+    }
+  } catch (err) {
+    console.warn('Failed to load unifiedPetNames.json, falling back to initial pet names:', err);
+  }
+
+  // Fallback to starter names
   return { names: INITIAL_PET_NAMES, source: 'built-in' };
 }
 
@@ -45,7 +55,7 @@ export async function getPetNames(): Promise<{ names: PetNameRecord[]; source: '
 export function getLocalFavorites(): string[] {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem('loveforpet_favorites');
+    const raw = localStorage.getItem('nameforpet_favorites') || localStorage.getItem('loveforpet_favorites');
     return raw ? JSON.parse(raw) : [];
   } catch {
     return [];
@@ -59,7 +69,7 @@ export function toggleLocalFavorite(nameId: string): string[] {
     const next = existing.includes(nameId)
       ? existing.filter(id => id !== nameId)
       : [...existing, nameId];
-    localStorage.setItem('loveforpet_favorites', JSON.stringify(next));
+    localStorage.setItem('nameforpet_favorites', JSON.stringify(next));
     return next;
   } catch {
     return [];

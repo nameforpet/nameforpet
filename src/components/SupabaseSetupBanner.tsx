@@ -22,37 +22,37 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`;
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto my-6 px-4">
-      <div className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+    <div className="w-full max-w-4xl mx-auto my-6 px-1 sm:px-4">
+      <div className={`rounded-xl sm:rounded-2xl border transition-all duration-200 overflow-hidden ${
         isConfigured 
           ? 'bg-emerald-50/70 border-emerald-200/80' 
           : 'bg-amber-50/70 border-amber-200/80'
       }`}>
         
         {/* Header Bar */}
-        <div className="p-3.5 sm:p-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
+        <div className="p-3 sm:p-4 flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
             <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
               isConfigured ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-white'
             }`}>
               <Database className="w-4 h-4" />
             </div>
 
-            <div>
-              <div className="flex items-center gap-2">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="text-xs font-bold text-stone-800">
-                  {isConfigured ? 'Supabase Connected' : 'Supabase Database Ready'}
+                  {isConfigured ? 'Supabase Connected' : 'Supabase Ready'}
                 </span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full ${
                   isConfigured 
                     ? 'bg-emerald-200 text-emerald-800' 
                     : 'bg-amber-200 text-amber-800'
                 }`}>
-                  {isConfigured ? 'Live Database Active' : 'Running on Built-in Dataset'}
+                  {isConfigured ? 'Active' : 'Local Data'}
                 </span>
               </div>
-              <p className="text-[11px] text-stone-500">
-                {totalNamesCount}+ pet names loaded across 14 languages. Ready for thousands more in Supabase!
+              <p className="text-[10px] sm:text-[11px] text-stone-500 truncate sm:whitespace-normal">
+                {totalNamesCount}+ pet names loaded across 14 languages.
               </p>
             </div>
           </div>
