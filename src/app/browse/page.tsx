@@ -14,7 +14,7 @@ import { classifyNamePersona } from '@/lib/namePersonaAI';
 import { AVAILABLE_LANGUAGES } from '@/lib/petNamesData';
 import { Search, Globe, Sparkles, X, ChevronDown, RotateCcw } from 'lucide-react';
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 36;
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const SPECIES_OPTIONS: { id: string; label: string; icon: string }[] = [

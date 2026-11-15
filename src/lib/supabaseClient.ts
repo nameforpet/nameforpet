@@ -25,9 +25,24 @@ export const supabase: SupabaseClient | null = isSupabaseConfigured
   : null;
 
 /**
- * Fetch pet names either from the Supabase database or fallback to the built-in dataset
+ * Fetch complete pet names dataset: loads all 17,960+ names from unified dataset
+ * and seamlessly merges any custom user-submitted or admin-created names from Supabase.
  */
 export async function getPetNames(): Promise<{ names: PetNameRecord[]; source: 'supabase' | 'built-in' }> {
+  let baseNames: PetNameRecord[] = [];
+
+  // 1. Load full unified dataset of 17,960+ pet names
+  try {
+    const unifiedData = (await import('@/data/unifiedPetNames.json')).default as PetNameRecord[];
+    if (unifiedData && unifiedData.length > 0) {
+      baseNames = unifiedData;
+    }
+  } catch (err) {
+    console.warn('Failed to load unifiedPetNames.json, falling back to initial pet names:', err);
+    baseNames = INITIAL_PET_NAMES;
+  }
+
+  // 2. If Supabase is connected, augment with newly added/custom names from the database
   if (isSupabaseConfigured && supabase) {
     try {
       const { data, error } = await supabase
@@ -36,26 +51,23 @@ export async function getPetNames(): Promise<{ names: PetNameRecord[]; source: '
         .order('popularity', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        return { names: data as PetNameRecord[], source: 'supabase' };
+        // Index by lowercase name to prevent duplicates while merging custom Supabase records
+        const nameMap = new Map<string, PetNameRecord>();
+        for (const item of baseNames) {
+          nameMap.set(item.name.toLowerCase().trim(), item);
+        }
+        for (const item of data as PetNameRecord[]) {
+          nameMap.set(item.name.toLowerCase().trim(), item);
+        }
+
+        return { names: Array.from(nameMap.values()), source: 'supabase' };
       }
-      console.warn('Supabase query returned empty or error, using built-in names dataset:', error?.message);
     } catch (err) {
-      console.warn('Supabase fetch exception, using built-in names dataset:', err);
+      console.warn('Supabase fetch exception, using unified dataset:', err);
     }
   }
 
-  // Gracefully load unified dataset with 17,900+ pet names across 22 languages and cute/luxury/funny types
-  try {
-    const unifiedData = (await import('@/data/unifiedPetNames.json')).default as PetNameRecord[];
-    if (unifiedData && unifiedData.length > 0) {
-      return { names: unifiedData, source: 'built-in' };
-    }
-  } catch (err) {
-    console.warn('Failed to load unifiedPetNames.json, falling back to initial pet names:', err);
-  }
-
-  // Fallback to starter names
-  return { names: INITIAL_PET_NAMES, source: 'built-in' };
+  return { names: baseNames, source: 'built-in' };
 }
 
 /**
