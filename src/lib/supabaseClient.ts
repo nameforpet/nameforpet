@@ -2,8 +2,17 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { PetNameRecord } from './types';
 import { INITIAL_PET_NAMES } from './petNamesData';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Connect to the verified Supabase project where Google OAuth is configured
+const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const rawKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+export const supabaseUrl = (rawUrl && !rawUrl.includes('tglcsfxzdjrxbisuhlud'))
+  ? rawUrl
+  : 'https://tpyceqabdimkusdaxgax.supabase.co';
+
+export const supabaseAnonKey = (rawKey && !rawUrl?.includes('tglcsfxzdjrxbisuhlud'))
+  ? rawKey
+  : 'sb_publishable_99RlD1GbTSAc9Aa3YPHAQQ_YrJcg8N2';
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl && 
@@ -12,7 +21,7 @@ export const isSupabaseConfigured = Boolean(
 );
 
 export const supabase: SupabaseClient | null = isSupabaseConfigured
-  ? createClient(supabaseUrl!, supabaseAnonKey!)
+  ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
 /**

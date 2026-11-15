@@ -3,7 +3,11 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseUrl = (rawUrl && !rawUrl.includes('tglcsfxzdjrxbisuhlud'))
+    ? rawUrl
+    : 'https://tpyceqabdimkusdaxgax.supabase.co';
+
   if (!supabaseUrl) {
     return NextResponse.json({ enabled: false, reason: 'No Supabase URL configured' });
   }
@@ -20,7 +24,8 @@ export async function GET() {
 
     return NextResponse.json({
       enabled: isEnabled,
-      status: checkRes.status
+      status: checkRes.status,
+      target: supabaseUrl
     });
   } catch (error: unknown) {
     return NextResponse.json({

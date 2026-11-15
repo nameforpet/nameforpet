@@ -51,27 +51,44 @@ export default function Home() {
 
     // Check for Supabase OAuth redirect session (e.g. Google Sign-In redirect)
     if (isSupabaseConfigured && supabase) {
+      const syncSessionUser = (user: { id: string; email?: string; created_at?: string; user_metadata?: { full_name?: string; avatar_url?: string } }) => {
+        const email = (user.email || 'user@gmail.com').toLowerCase();
+        const name = user.user_metadata?.full_name || email.split('@')[0];
+        const isOwner = email.includes('hinduwara') || email.includes('nameforpet') || email.startsWith('admin@');
+        const oauthUser: RegisteredUser = {
+          id: `USR-G${user.id.slice(0, 6)}`,
+          name,
+          email,
+          createdAt: user.created_at || new Date().toISOString(),
+          lastLoginAt: new Date().toISOString(),
+          role: isOwner ? 'admin' : 'user',
+          savedNamesCount: 0,
+          ordersCount: 0,
+          provider: 'google',
+          avatarUrl: user.user_metadata?.avatar_url
+        };
+        saveUserLocally(oauthUser);
+        setCurrentUser(oauthUser);
+        setCurrentUserSession(oauthUser);
+      };
+
+      // 1. Initial check
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session?.user) {
-          const email = session.user.email || 'user@gmail.com';
-          const name = session.user.user_metadata?.full_name || email.split('@')[0];
-          const oauthUser: RegisteredUser = {
-            id: `USR-G${session.user.id.slice(0, 6)}`,
-            name,
-            email,
-            createdAt: session.user.created_at || new Date().toISOString(),
-            lastLoginAt: new Date().toISOString(),
-            role: 'user',
-            savedNamesCount: 0,
-            ordersCount: 0,
-            provider: 'google',
-            avatarUrl: session.user.user_metadata?.avatar_url
-          };
-          saveUserLocally(oauthUser);
-          setCurrentUser(oauthUser);
-          setCurrentUserSession(oauthUser);
+          syncSessionUser(session.user);
         }
       });
+
+      // 2. Real-time auth state listener (for OAuth redirect hash parsing)
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session?.user) {
+          syncSessionUser(session.user);
+        }
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     }
 
     async function loadData() {
