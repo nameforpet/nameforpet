@@ -8,9 +8,10 @@ import {
   User, 
   LogOut, 
   ChevronDown, 
-  Images,
-  Mail,
-  BookOpen
+  Images, 
+  Mail, 
+  BookOpen,
+  ShieldCheck
 } from 'lucide-react';
 import { RegisteredUser } from '@/lib/types';
 
@@ -291,6 +292,17 @@ export default function Navbar({
                       <Mail className="w-3.5 h-3.5 text-stone-500" />
                       <span>Contact Support</span>
                     </Link>
+
+                    {currentUser && (currentUser.email.includes('hinduwara') || currentUser.email.includes('nameforpet') || currentUser.role === 'admin') && (
+                      <Link
+                        href="/nameforpet-control-9872"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="w-full px-3 py-2 text-left text-xs font-bold text-amber-600 hover:bg-amber-50 rounded-xl flex items-center gap-2 transition-colors border-t border-stone-100"
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
+                        <span>Owner Console</span>
+                      </Link>
+                    )}
                   </div>
 
                   {onSignOut && (
