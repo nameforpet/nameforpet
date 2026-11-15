@@ -12,7 +12,7 @@ import { getPetNames, getLocalFavorites, toggleLocalFavorite } from '@/lib/supab
 import { getCurrentUser, setCurrentUser } from '@/lib/userStorage';
 import { classifyNamePersona } from '@/lib/namePersonaAI';
 import { AVAILABLE_LANGUAGES } from '@/lib/petNamesData';
-import { Search, Globe, Filter, Sparkles, X, ChevronDown, RotateCcw } from 'lucide-react';
+import { Search, Globe, Sparkles, X, ChevronDown, RotateCcw } from 'lucide-react';
 
 const PAGE_SIZE = 24;
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');

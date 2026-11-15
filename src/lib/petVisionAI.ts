@@ -214,12 +214,10 @@ export function matchPetNames(
     }
 
     // Color resonance
-    let hasColorMatch = false;
     for (const tag of nameRec.color_tags || []) {
       if (colorTags.has(tag)) {
         score += 35;
         reasons.push(`Matches their ${tag} coat tones`);
-        hasColorMatch = true;
         break;
       }
     }

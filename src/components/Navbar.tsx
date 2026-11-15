@@ -27,7 +27,6 @@ interface NavbarProps {
 export default function Navbar({
   savedCount = 0,
   onOpenSaved,
-  onOpenExplore,
   onResetHome,
   currentUser,
   onOpenAuth,
