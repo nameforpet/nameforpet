@@ -1,16 +1,30 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Community Pet Gallery & Showcase - nameforpet.com',
-  description: 'Explore adorable dogs, cats, rabbits, and birds from pet owners worldwide with their AI-matched names, coat colors, and origin meanings.',
+  title: 'Pet Gallery & Community Wall | NameForPet',
+  description: 'Explore our community pet gallery. See adorable dogs, cats, rabbits, and birds with their AI-matched names, detected coat palettes, and breed characteristics.',
+  keywords: [
+    'pet gallery',
+    'community pet photos',
+    'cute pet portraits',
+    'dog photo gallery',
+    'cat photo gallery',
+    'ai matched pet names'
+  ],
   alternates: {
-    canonical: '/gallery',
+    canonical: 'https://www.nameforpet.com/gallery',
   },
   openGraph: {
-    title: 'Community Pet Gallery - nameforpet.com',
-    description: 'Browse real pet photos and their unique multilingual AI-matched names.',
-    url: 'https://nameforpet.com/gallery',
+    title: 'Pet Gallery & Community Wall - NameForPet',
+    description: 'Browse community pet portraits and discover adorable dogs, cats, and rabbits with their AI-matched names.',
+    url: 'https://www.nameforpet.com/gallery',
+    siteName: 'nameforpet.com',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pet Gallery & Community Wall - NameForPet',
+    description: 'Browse community pet portraits and discover adorable pets with their AI-matched names.',
   },
 };
 

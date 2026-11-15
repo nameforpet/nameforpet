@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nameforpet.com"),
+  metadataBase: new URL("https://www.nameforpet.com"),
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     ],
   },
   title: {
-    default: "nameforpet.com - AI Pet Name Generator from Photo",
-    template: "%s | nameforpet.com"
+    default: "NameForPet - AI Pet Name Generator from Photo | 17,900+ Names",
+    template: "%s | NameForPet"
   },
-  description: "Find the most meaningful pet name for your dog, cat, kitten, rabbit, or bird across 22+ languages. Upload a photo and let our Vision AI analyze coat colors and personality.",
+  description: "Find the most meaningful pet name for your dog, cat, puppy, kitten, rabbit, or bird across 22+ languages. Upload or take a photo and let our Vision AI analyze coat colors, breed traits, and personality styles.",
   keywords: [
     "pet names",
     "ai pet name generator",
@@ -55,13 +55,16 @@ export const metadata: Metadata = {
     "nameforpet",
     "pet name database"
   ],
-  authors: [{ name: "nameforpet.com Team", url: "https://nameforpet.com" }],
-  creator: "nameforpet.com",
-  publisher: "nameforpet.com",
-  applicationName: "nameforpet",
+  authors: [{ name: "NameForPet Team", url: "https://www.nameforpet.com" }],
+  creator: "NameForPet",
+  publisher: "NameForPet",
+  applicationName: "NameForPet",
   category: "Lifestyle",
   alternates: {
-    canonical: "/",
+    canonical: "https://www.nameforpet.com",
+    languages: {
+      "en-US": "https://www.nameforpet.com",
+    },
   },
   robots: {
     index: true,
@@ -75,17 +78,26 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "nameforpet.com - AI Pet Name Generator",
+    title: "NameForPet - AI Pet Name Generator from Photo",
     description: "Upload a picture of your pet to find matching multilingual names powered by Vision AI.",
-    url: "https://nameforpet.com",
-    siteName: "nameforpet.com",
+    url: "https://www.nameforpet.com",
+    siteName: "NameForPet",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "NameForPet - AI Pet Name Generator from Photo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "nameforpet.com - AI Pet Name Generator from Photo",
+    title: "NameForPet - AI Pet Name Generator from Photo",
     description: "Scan your pet's photo to match 17,900+ names across 22 languages powered by Vision AI.",
+    images: ["/opengraph-image"],
   },
 };
 
@@ -93,23 +105,23 @@ const jsonLdData = [
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "nameforpet.com",
-    "url": "https://nameforpet.com",
+    "name": "NameForPet",
+    "url": "https://www.nameforpet.com",
     "description": "AI-Powered Multilingual Pet Name Finder from Photo",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://nameforpet.com/?q={search_term_string}",
+      "target": "https://www.nameforpet.com/browse?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "nameforpet AI Pet Name Generator",
+    "name": "NameForPet AI Pet Name Generator",
     "applicationCategory": "LifestyleApplication",
     "operatingSystem": "All",
-    "url": "https://nameforpet.com",
-    "description": "Smart on-device Vision AI that scans pet photos, identifies breeds and coat pigments, and suggests personalized pet names across 22 languages.",
+    "url": "https://www.nameforpet.com",
+    "description": "Smart Vision AI that scans pet photos, identifies breeds and coat pigments, and suggests personalized pet names across 22 languages.",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -126,9 +138,9 @@ const jsonLdData = [
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "nameforpet.com",
-    "url": "https://nameforpet.com",
-    "logo": "https://nameforpet.com/favicon.ico",
+    "name": "NameForPet",
+    "url": "https://www.nameforpet.com",
+    "logo": "https://www.nameforpet.com/icon.svg",
     "contactPoint": {
       "@type": "ContactPoint",
       "email": "nameforpet1@gmail.com",
@@ -143,19 +155,51 @@ const jsonLdData = [
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://nameforpet.com"
+        "item": "https://www.nameforpet.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Pet Gallery",
-        "item": "https://nameforpet.com/gallery"
+        "name": "Browse 17,900+ Names",
+        "item": "https://www.nameforpet.com/browse"
       },
       {
         "@type": "ListItem",
         "position": 3,
+        "name": "Pet Gallery",
+        "item": "https://www.nameforpet.com/gallery"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
         "name": "Contact Us",
-        "item": "https://nameforpet.com/contact"
+        "item": "https://www.nameforpet.com/contact"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Find the Perfect Pet Name from a Photo",
+    "description": "Step-by-step guide to generating matching multilingual pet names using Vision AI.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Snap or Upload a Pet Photo",
+        "text": "Take a live picture of your pet or upload any clear JPG, PNG, or WEBP photo."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "AI Vision Analysis",
+        "text": "The Vision AI detects coat pigments, eye color, and canine or feline morphological traits."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Explore Matching Multilingual Names",
+        "text": "Review personalized pet names ranked by match score with cultural meanings, origins, and fun facts."
       }
     ]
   },
@@ -165,26 +209,42 @@ const jsonLdData = [
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "How does the AI name my pet from a photo?",
+        "name": "How does the AI name generator identify my pet from a photo?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "nameforpet.com uses Vision AI to isolate your pet from the background, detect dominant coat pigments, and identify morphological features (like ear posture and eye colors) to match names from 17,900+ curated pet names across 22 languages."
+          "text": "NameForPet uses intelligent Vision AI to isolate your pet from the background, determine the dominant coat palette, identify morphological features like ear posture and facial indicators, and match scores across 17,900+ curated pet names."
         }
       },
       {
         "@type": "Question",
-        "name": "Is my uploaded pet photo private and secure?",
+        "name": "Is my pet's photo stored safely and privately?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! All uploaded pet photos are processed using secure Vision AI and stored with encrypted cloud object storage. Your data is private and used solely for personalized pet naming."
+          "text": "Yes! All uploaded pet photos are processed using secure Vision AI and stored with encrypted cloud object storage. Your data is private, never shared with third-party advertisers, and used solely for personalized pet naming."
         }
       },
       {
         "@type": "Question",
-        "name": "What animals can the AI name?",
+        "name": "Can the AI name both dogs and cats?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Our AI is optimized for dogs, cats, kittens, puppies, rabbits, and birds, with specific coat tone matching and personality persona scoring for cute, luxury, funny, and brave vibes."
+          "text": "Yes! Our AI includes specialized canine and feline classifiers. Kittens and adult cats are recognized by characteristic facial morphology, upright triangular ears, and eye pigmentation. You also have a 1-click Species Switcher on the results card to toggle between Dog, Cat, Rabbit, and Bird at any time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which languages and cultural origins are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our unified database features names from 22+ languages and traditions, including Japanese (with Kanji), French, Spanish, Italian, German, Danish, Irish, Scottish, Norse, Swahili, Korean, and English, each with cultural origins, meanings, and fun facts."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the AI Name Personas (Cute, Luxury, Funny, Brave)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our AI evaluates phonetics, syllables, and historical definitions to assign badges like Cute & Sweet (🌸), Luxury & Royal (💎), Funny & Quirky (😂), Brave & Bold (🦁), and Gentle & Cozy (🌿), making it easy to filter names matching your pet's unique character."
         }
       }
     ]

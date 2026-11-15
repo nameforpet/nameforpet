@@ -15,8 +15,11 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: 'Privacy Policy & Data Protection - nameforpet.com',
-  description: 'Learn how nameforpet.com safeguards your privacy: on-device Vision AI, user account authentication security, and upcoming store payment protections.',
+  title: 'Privacy Policy & Data Protection - NameForPet',
+  description: 'Learn how NameForPet safeguards your privacy: private Vision AI processing, secure authentication, and data protection policies.',
+  alternates: {
+    canonical: 'https://www.nameforpet.com/privacy',
+  },
 };
 
 export default function PrivacyPolicyPage() {
