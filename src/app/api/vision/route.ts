@@ -69,10 +69,12 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Stable Gemini Vision models: primary ultra-reliable model with automatic single-tier fallback
+    // Stable Gemini Vision models: primary ultra-reliable models with fallback
     const candidateModels = [
+      'gemini-2.5-flash',
       'gemini-3.1-flash-lite',
-      'gemini-3.5-flash-lite'
+      'gemini-3.5-flash-lite',
+      'gemini-flash-latest'
     ];
 
     const promptText = `

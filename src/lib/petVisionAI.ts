@@ -56,6 +56,24 @@ export async function analyzePetImage(
             result = deriveSpeciesAdjustment(result, forcedSpecies);
           }
           return result;
+        } else if (data.error === 'GEMINI_API_KEY_NOT_CONFIGURED') {
+          console.error('Vision API Key is not configured in Vercel environment variables.');
+          return {
+            isAnimal: true,
+            detectedSpecies: forcedSpecies || 'other',
+            detectedBreed: 'API Key Missing on Vercel',
+            confidence: 50,
+            dominantColors: [
+              { name: 'Natural Fur', hex: '#E5C185', percentage: 100 }
+            ],
+            traits: ['Add GEMINI_API_KEY to Vercel Environment Variables'],
+            vibe: 'Configuration Required',
+            coatPattern: 'Unknown',
+            eyeColor: 'Unknown',
+            reasoningNotes: ['GEMINI_API_KEY is missing in Vercel settings.'],
+            subjectIsolated: true,
+            description: '⚠️ The AI Vision engine is not receiving GEMINI_API_KEY in Vercel environment variables. Please add GEMINI_API_KEY to Vercel to enable accurate species (cat, dog, bird, rabbit) and breed identification.'
+          };
         }
       }
     } catch (err) {
