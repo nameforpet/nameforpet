@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     ],
   },
   title: {
-    default: "NameForPet - AI Pet Name Generator from Photo | 17,900+ Names",
+    default: "NameForPet – AI Pet Name Generator from Photo | 17,900+ Names",
     template: "%s | NameForPet"
   },
-  description: "Find the most meaningful pet name for your dog, cat, puppy, kitten, rabbit, or bird across 22+ languages. Upload or take a photo and let our Vision AI analyze coat colors, breed traits, and personality styles.",
+  description: "Find the perfect name for your dog, cat, puppy, kitten, rabbit, or bird. Upload a pet photo and our free Vision AI suggests 17,900+ meaningful names across 22 languages based on breed, coat color, and personality.",
   keywords: [
     // Brand
     "nameforpet", "nameforpet.com", "name for pet", "NameForPet",
@@ -78,6 +78,16 @@ export const metadata: Metadata = {
     "cute pet names", "pet names list", "browse pet names",
     "pet name gallery", "pet photo names"
   ],
+  verification: {
+    // google: 'YOUR_GOOGLE_VERIFICATION_CODE', // Uncomment and add your code from Search Console HTML tag method
+  },
+  classification: "Pets & Animals",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   authors: [{ name: "NameForPet Team", url: "https://www.nameforpet.com" }],
   creator: "NameForPet",
   publisher: "NameForPet",
@@ -101,8 +111,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "NameForPet - AI Pet Name Generator from Photo",
-    description: "Upload a picture of your pet to find matching multilingual names powered by Vision AI.",
+    title: "NameForPet – AI Pet Name Generator from Photo | Free & Multilingual",
+    description: "Upload your pet's photo and get personalized name suggestions across 22 languages. Free AI tool for dogs, cats, puppies, kittens, rabbits, and birds with cultural meanings and personality badges.",
     url: "https://www.nameforpet.com",
     siteName: "NameForPet",
     locale: "en_US",
@@ -112,15 +122,16 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "NameForPet - AI Pet Name Generator from Photo",
+        alt: "NameForPet – Free AI Pet Name Generator from Photo with 17,900+ multilingual names",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NameForPet - AI Pet Name Generator from Photo",
-    description: "Scan your pet's photo to match 17,900+ names across 22 languages powered by Vision AI.",
+    title: "NameForPet – AI Pet Name Generator from Photo",
+    description: "Free! Upload your pet photo → get 17,900+ personalized names across 22 languages powered by Vision AI. Perfect for dogs, cats, puppies, kittens & birds.",
     images: ["/opengraph-image"],
+    creator: "@nameforpet",
   },
 };
 
@@ -163,12 +174,39 @@ const jsonLdData = [
     "@type": "Organization",
     "name": "NameForPet",
     "url": "https://www.nameforpet.com",
-    "logo": "https://www.nameforpet.com/icon.svg",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.nameforpet.com/icon.svg",
+      "width": 512,
+      "height": 512
+    },
     "contactPoint": {
       "@type": "ContactPoint",
       "email": "nameforpet1@gmail.com",
-      "contactType": "customer service"
-    }
+      "contactType": "customer service",
+      "availableLanguage": "English"
+    },
+    "sameAs": [
+      "https://www.nameforpet.com"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Pet Name Categories on NameForPet",
+    "description": "Browse 17,900+ pet names by species, language, and personality style",
+    "url": "https://www.nameforpet.com/browse",
+    "numberOfItems": 8,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Cute & Sweet Dog Names", "url": "https://www.nameforpet.com/browse?vibe=cute&species=dog" },
+      { "@type": "ListItem", "position": 2, "name": "Luxury & Royal Cat Names", "url": "https://www.nameforpet.com/browse?vibe=luxury&species=cat" },
+      { "@type": "ListItem", "position": 3, "name": "Japanese Pet Names", "url": "https://www.nameforpet.com/browse?lang=Japanese" },
+      { "@type": "ListItem", "position": 4, "name": "French Dog Names", "url": "https://www.nameforpet.com/browse?lang=French&species=dog" },
+      { "@type": "ListItem", "position": 5, "name": "Spanish Cat Names", "url": "https://www.nameforpet.com/browse?lang=Spanish&species=cat" },
+      { "@type": "ListItem", "position": 6, "name": "Brave & Bold Names", "url": "https://www.nameforpet.com/browse?vibe=brave" },
+      { "@type": "ListItem", "position": 7, "name": "Funny & Quirky Pet Names", "url": "https://www.nameforpet.com/browse?vibe=funny" },
+      { "@type": "ListItem", "position": 8, "name": "Norse & Celtic Pet Names", "url": "https://www.nameforpet.com/browse?lang=Norse" }
+    ]
   },
   {
     "@context": "https://schema.org",

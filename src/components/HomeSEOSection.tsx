@@ -62,6 +62,21 @@ const POPULAR_STYLES = [
   }
 ];
 
+const POPULAR_LINKS = [
+  { label: '🐕 Dog Names', href: '/browse?species=dog' },
+  { label: '🐈 Cat Names', href: '/browse?species=cat' },
+  { label: '🐰 Rabbit Names', href: '/browse?species=rabbit' },
+  { label: '🐦 Bird Names', href: '/browse?species=bird' },
+  { label: '🇯🇵 Japanese Names', href: '/browse?lang=Japanese' },
+  { label: '🇫🇷 French Names', href: '/browse?lang=French' },
+  { label: '🇪🇸 Spanish Names', href: '/browse?lang=Spanish' },
+  { label: '🇰🇷 Korean Names', href: '/browse?lang=Korean' },
+  { label: '🌸 Cute & Sweet', href: '/browse?vibe=cute' },
+  { label: '💎 Luxury & Royal', href: '/browse?vibe=luxury' },
+  { label: '🦁 Brave & Bold', href: '/browse?vibe=brave' },
+  { label: '😂 Funny & Quirky', href: '/browse?vibe=funny' },
+];
+
 export default function HomeSEOSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -207,6 +222,27 @@ export default function HomeSEOSection() {
             </Link>
           </p>
         </div>
+      </div>
+
+      {/* ── Popular Searches (SEO internal link grid) ── */}
+      <div className="max-w-3xl mx-auto mt-10 mb-6">
+        <h3 className="text-center text-sm font-bold text-stone-500 uppercase tracking-widest mb-4">
+          Popular Pet Name Categories
+        </h3>
+        <div className="flex flex-wrap justify-center gap-2">
+          {POPULAR_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-stone-200 text-stone-700 hover:border-brand-400 hover:text-brand-700 transition-colors shadow-2xs"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+        <p className="text-center text-[11px] text-stone-400 mt-4">
+          Browse all <Link href="/browse" className="text-brand-600 font-bold hover:underline">17,900+ pet names</Link> in our free database →
+        </p>
       </div>
 
     </section>
