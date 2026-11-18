@@ -38,22 +38,45 @@ export const metadata: Metadata = {
   },
   description: "Find the most meaningful pet name for your dog, cat, puppy, kitten, rabbit, or bird across 22+ languages. Upload or take a photo and let our Vision AI analyze coat colors, breed traits, and personality styles.",
   keywords: [
-    "pet names",
-    "ai pet name generator",
-    "dog name finder from photo",
-    "cat name generator",
-    "kitten names",
-    "puppy names",
-    "multilingual pet names",
-    "japanese pet names",
-    "french dog names",
-    "spanish cat names",
-    "italian pet names",
-    "luxury pet names",
-    "cute pet names",
-    "unique pet names with meanings",
-    "nameforpet",
-    "pet name database"
+    // Brand
+    "nameforpet", "nameforpet.com", "name for pet", "NameForPet",
+    // Core tool
+    "ai pet name generator", "pet name generator", "pet name finder",
+    "pet name from photo", "photo pet name generator", "vision ai pet naming",
+    "ai dog name generator", "ai cat name generator",
+    // Pet species — dogs
+    "dog names", "puppy names", "dog name ideas", "best dog names",
+    "male dog names", "female dog names", "cute dog names", "funny dog names",
+    "unique dog names", "rare dog names", "cool dog names",
+    // Pet species — cats
+    "cat names", "kitten names", "cat name ideas", "best cat names",
+    "male cat names", "female cat names", "cute cat names", "funny cat names",
+    "black cat names", "white cat names", "orange cat names",
+    // Other pets
+    "rabbit names", "bunny names", "bird names", "parrot names",
+    "hamster names", "guinea pig names", "fish names", "turtle names",
+    // Languages & cultures
+    "japanese pet names", "japanese dog names", "japanese cat names",
+    "french pet names", "french dog names", "french cat names",
+    "spanish pet names", "spanish dog names", "spanish cat names",
+    "italian pet names", "italian dog names", "german dog names",
+    "irish dog names", "norse pet names", "korean pet names",
+    "hindi pet names", "arabic pet names", "multilingual pet names",
+    // Name style / vibe
+    "luxury pet names", "royal pet names", "elegant pet names",
+    "brave pet names", "strong dog names", "gentle cat names",
+    "nature inspired pet names", "food inspired pet names",
+    "mythological pet names", "goddess pet names", "warrior dog names",
+    // Long-tail / question keywords
+    "what to name my dog", "what to name my cat",
+    "best name for golden retriever", "best name for black lab",
+    "names for white dogs", "names for fluffy cats",
+    "gender neutral pet names", "unisex pet names",
+    "pet names with meanings", "pet name origins",
+    // Database / browsing intent
+    "pet name database", "17900 pet names", "unique pet names with meanings",
+    "cute pet names", "pet names list", "browse pet names",
+    "pet name gallery", "pet photo names"
   ],
   authors: [{ name: "NameForPet Team", url: "https://www.nameforpet.com" }],
   creator: "NameForPet",
