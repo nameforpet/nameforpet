@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Heart, ShieldCheck } from 'lucide-react';
 
 export default function Footer() {
@@ -11,9 +12,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="max-w-xs">
             <div className="flex items-center">
-              <img
+              <Image
                 src="/logo.png"
                 alt="NameForPet – AI Pet Name Generator"
+                width={120}
+                height={36}
                 className="h-8 sm:h-9 w-auto object-contain"
               />
             </div>

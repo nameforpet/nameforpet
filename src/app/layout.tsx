@@ -119,7 +119,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/opengraph-image",
+        url: "https://www.nameforpet.com/opengraph-image",
         width: 1200,
         height: 630,
         alt: "NameForPet – Free AI Pet Name Generator from Photo with 17,900+ multilingual names",
@@ -130,7 +130,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NameForPet – AI Pet Name Generator from Photo",
     description: "Free! Upload your pet photo → get 17,900+ personalized names across 22 languages powered by Vision AI. Perfect for dogs, cats, puppies, kittens & birds.",
-    images: ["/opengraph-image"],
+    images: ["https://www.nameforpet.com/opengraph-image"],
     creator: "@nameforpet",
   },
 };

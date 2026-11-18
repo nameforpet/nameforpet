@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     url: 'https://www.nameforpet.com/browse',
     siteName: 'NameForPet',
     type: 'website',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Browse 17,900+ Pet Names – NameForPet' }],
+    images: [{ url: 'https://www.nameforpet.com/opengraph-image', width: 1200, height: 630, alt: 'Browse 17,900+ Pet Names – NameForPet' }],
   },
   twitter: {
     card: 'summary_large_image',

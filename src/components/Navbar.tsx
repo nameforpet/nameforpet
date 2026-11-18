@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { 
   Bookmark, 
@@ -74,10 +75,13 @@ export default function Navbar({
           className="flex items-center group focus:outline-none shrink-0"
           aria-label="NameForPet Home"
         >
-          <img
+          <Image
             src="/logo.png"
-            alt="NameForPet Logo"
+            alt="NameForPet – AI Pet Name Generator"
+            width={120}
+            height={40}
             className="h-8 sm:h-10 w-auto object-contain group-hover:scale-102 transition-transform duration-200"
+            priority
           />
         </Link>
 
