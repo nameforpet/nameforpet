@@ -261,7 +261,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics 4 (GA4) */}
+        {/* Google Tag Manager / Google Analytics (GTM-TJ29X7B4) */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-TJ29X7B4"
+        />
+        <script
+          id="google-tag-manager"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            `
+          }}
+        />
+
+        {/* Optional Google Analytics 4 (GA4) Direct Fallback */}
         {gaId && (
           <>
             <script
@@ -335,6 +351,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-dvh overflow-x-hidden`}
       >
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TJ29X7B4"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-stone-900 focus:text-white focus:rounded-lg focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold transition-transform"
